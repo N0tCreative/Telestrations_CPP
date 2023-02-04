@@ -13,5 +13,9 @@ then (2)checks that the permutations dont move any numbers from one position to 
 
 the original progam was the telestrations orgainzer written in rust and was highly unoptimized hopefully this refactored version will be more able to accommodate a
 larger number of players. to reduce complexity first, all possible permutations will be generated based on heaps algorithm, then any permutations that have the ith
-element at the ith index will be removed (these would confict with the person never getting a book twice). after that the permuations will be pushed onto a stack so that
-recursion isnt required to go through every possibility
+element at the ith index will be removed (these would confict with the person never getting a book twice and the permuation where everyone starts with their book). 
+after that the permuations will be pushed onto a stack so that recursion isnt required. create a filter (number only shows in each index once) that is updated every time
+a permutation is added to current order to weed out perms that confilct with it from the stack. once you have a valid set of permutations then reorder them until you
+have covered every possible ordering or you reach one that satisfies both (1) and (2). 
+
+look into using a table for who can send to who instead. this might be faster to prove that it would be impossible to never send to the same person twice.
