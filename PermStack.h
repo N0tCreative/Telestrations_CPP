@@ -11,5 +11,6 @@ class PermStack{
         PermStack(int NumberOfPlayers);
         void Push(std::vector<char>* NewPermuatation);
         std::vector<std::vector<char>> GetValidOrder();
+        void GenerateFirstPermutations();
 };
 #endif

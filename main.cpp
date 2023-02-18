@@ -20,11 +20,19 @@ int main(){
     std::vector<std::vector<char>> result = Stack.GetValidOrder();
     DisplayResults(AllPermutations);
 
+    return 0;
 }
 
 //prompts user to input the number of players
-int GetNumPlayers(){return 1;}
+int GetNumPlayers(){
+    int PlayerNumber =-1;
+    while(PlayerNumber <1 || PlayerNumber >32){
+        std::cout<<"Enter the number of people playing telestrations (1-32):";
+        std::cin>> PlayerNumber;
+    }
+    return PlayerNumber;
+}
 //generates all valid first permutations for the given number of players
 std::vector<std::vector<char>> GeneratePerms(int numPlayers){return std::vector<std::vector<char>>(0);}
 //displays the resulting order
-void DisplayResults(std::vector<std::vector<char>> results){std::cout<<"no results";}
+void DisplayResults(std::vector<std::vector<char>> results){std::cout<<"no results\n";}

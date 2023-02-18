@@ -11,7 +11,13 @@ PermStack::PermStack(int NumberOfPlayers){
     RoundLocationInStack = std::vector<long>(NumberOfPlayers,0);
 }
 
-void PermStack::Push(std::vector<char>*NewPermuatation){};
+void PermStack::GenerateFirstPermutations(){
+
+}
+
+void PermStack::Push(std::vector<char>*NewPermuatation){
+    Permutations.push_back(NewPermuatation);
+};
 std::vector<std::vector<char>> PermStack::GetValidOrder(){
     std::vector<std::vector<char>> empty;
     return empty;
