@@ -1,7 +1,8 @@
-#include <vector>
-#include "Filter.h"
+
 #ifndef PERM_STACK_CLASS
 #define PERM_STACK_CLASS
+#include <vector>
+#include "Filter.h"
 class PermStack{
     private:
         std::vector<long> RoundLocationInStack;
