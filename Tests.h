@@ -2,9 +2,11 @@
 #define TEST_FUNCTS
 #include "PermStack.h"
 
-void PrintVec(std::vector<int> val);
+void PrintVec(std::vector<char> val);
 
 void FilterTests(int PlayerNumber);
-void FilterTestResults(Filter filt, std::vector<int> val, bool expected);
+void FilterTestResults(Filter filt, std::vector<char> val, bool expected);
+
+void StackTests(int PlayerNumber);
 
 #endif

@@ -3,6 +3,7 @@
 #include "Tests.h"
 #include <vector>
 #include "main.h"
+#define STACK_TEST
 
 
 /*  Main CPP telestrations organizer (driver for the permutation stack)
@@ -10,13 +11,17 @@
  *  outputs visual representation of who each person should send their book to
  */
 int main(){
+    int PlayerNumber =4;
     #ifdef FILTER_TEST
-        int PlayerNumber =3;
         FilterTests(PlayerNumber);
         return 0;
     #endif
+    #ifdef STACK_TEST
+        StackTests(PlayerNumber);
+        return 0;
+    #endif
     
-    int PlayerNumber = GetNumPlayers();
+    PlayerNumber = GetNumPlayers();
     std::vector<std::vector<char>> AllPermutations= GeneratePerms(PlayerNumber);
 
     PermStack Stack = PermStack(PlayerNumber);

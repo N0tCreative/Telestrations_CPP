@@ -27,21 +27,21 @@ void Filter::SetNumberOfPlayers(int NumOfPlayers){
 }
 
 //adds new list of new numbers to be blocked for that position
-void Filter::Block(std::vector<int> NewUsedNumbers){
+void Filter::Block(std::vector<char> NewUsedNumbers){
     for(int i=0; i< UsedNumbers.size(); i++){
         UsedNumbers[i] = UsedNumbers[i] | 1<<(NewUsedNumbers[i] -1);
     }
 }
 
 //removes block for that number
-void Filter::Unblock(std::vector<int> NewUnusedNumbers){
+void Filter::Unblock(std::vector<char> NewUnusedNumbers){
     for(int i=0; i< UsedNumbers.size(); i++){
         UsedNumbers[i] = UsedNumbers[i] & ~(1<<(NewUnusedNumbers[i] -1));
     }
 }
 
 //checks if the vector to be tested is valid
-bool Filter::IsValid(std::vector<int> NumbersToBeTested){
+bool Filter::IsValid(std::vector<char> NumbersToBeTested){
     bool valid =true;
     //check if each number passes the filter
     for(int i=0; i< UsedNumbers.size(); i++){

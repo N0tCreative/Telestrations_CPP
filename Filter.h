@@ -9,8 +9,8 @@ class Filter{
         Filter();
         Filter(int NumbOfPlayers);
         void SetNumberOfPlayers(int NumOfPlayers);
-        void Block(std::vector<int> NewUsedNumbers);
-        void Unblock(std::vector<int> NewUnusedNumbers);
-        bool IsValid(std::vector<int> NumbersToBeTested);
+        void Block(std::vector<char> NewUsedNumbers);
+        void Unblock(std::vector<char> NewUnusedNumbers);
+        bool IsValid(std::vector<char> NumbersToBeTested);
 };
 #endif
