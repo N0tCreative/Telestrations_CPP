@@ -2,6 +2,8 @@
 #include "Filter.h"
 #include <vector>
 #include <iostream>
+#include <algorithm>
+#include <random>
 
 /* this stack is used to store the permutations that will be tested
  * 
@@ -28,7 +30,7 @@ inline void Swap(char* ele1Ptr, char* ele2Ptr){
 
 //Generates first round of permutations
 void PermStack::GenerateFirstPermutations(){
-    
+    auto rng = std::default_random_engine{};
     //non recursive heap's algorithm based on implimentation by Sedgewick, Robert in "a talk on Permutation Generation Algorithms" 
     //link: https://sedgewick.io/wp-content/uploads/2022/03/2002PermGeneration.pdf
     std::vector<char> StackState =std::vector<char>(NumberOfPlayers);
@@ -58,6 +60,9 @@ void PermStack::GenerateFirstPermutations(){
             StackPtr++;
         }
     }
+
+    //the algorithm tends to find the solution (if one exists) faster if the list of possible permutations is randomized
+    std::shuffle(Permutations.begin(), Permutations.end(), rng);
 
     //set the second round pointer
     RoundLocationInStack[0] = Permutations.size();
