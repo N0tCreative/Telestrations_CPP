@@ -11,7 +11,7 @@
 PermStack::PermStack(int NumOfPlayers){
     NumberOfPlayers= NumOfPlayers;
     InvalidBookFilter.SetNumberOfPlayers(NumberOfPlayers);
-    Permutations = std::vector<std::vector<char>*>();
+    Permutations = new std::vector<std::vector<char>*>();
     RoundLocationInStack = std::vector<long>(NumberOfPlayers-1);
     RoundsCurrentlyBeingTested = std::vector<std::vector<char>>(NumberOfPlayers-1, std::vector<char>(NumberOfPlayers-1));
 }
@@ -52,7 +52,7 @@ void PermStack::GenerateFirstPermutations(){
             //if this permutation works then add it to the stack
             if(InvalidBookFilter.IsValid(PeopleWithBook)){
                 std::vector<char>* permutation = new std::vector<char>(PeopleWithBook);
-                Permutations.push_back(permutation);
+                Permutations->push_back(permutation);
             }
         } else{
             //calling generate(i+1, PeopleWithBook) has ended as the for loop terminated. reset the state and simulate popping the stack by incrimenting pointer
@@ -62,34 +62,34 @@ void PermStack::GenerateFirstPermutations(){
     }
 
     //the algorithm tends to find the solution (if one exists) faster if the list of possible permutations is randomized
-    std::shuffle(Permutations.begin(), Permutations.end(), rng);
+    std::shuffle(Permutations->begin(), Permutations->end(), rng);
 
     //set the second round pointer
-    RoundLocationInStack[0] = Permutations.size();
+    RoundLocationInStack[0] = Permutations->size();
 }
 
 //pushes new permutations onto the stack if valid
 void PermStack::Push(std::vector<char>*NewPermuatation){
-    Permutations.push_back(NewPermuatation);
+    Permutations->push_back(NewPermuatation);
 };
 
 //returns the last permutation
 std::vector<char>* PermStack::Peek(){
-    return Permutations.back();
+    return Permutations->back();
     
 };
 
 //frees the permutation that is at the end of the stack and removes it
 void PermStack::Pop(){
     if(!IsEmpty()){
-        delete(Permutations.back());
-        Permutations.erase(Permutations.end() -1);
+        delete(Permutations->back());
+        Permutations->erase(Permutations->end() -1);
     }
 };
 
 //tests if stack is empty
 bool PermStack::IsEmpty(){
-    return Permutations.size() <= 0;
+    return Permutations->size() <= 0;
 };
 
 //empties the stack and deletes everything on it
@@ -97,6 +97,7 @@ void PermStack::ClearStack(){
     while(! IsEmpty()){
         Pop();
     }
+    delete Permutations;
 }
 
 /* main function used to get a sending order for the books that has each person with a unique book each round

@@ -3,12 +3,13 @@
 #define PERM_STACK_CLASS
 #include <vector>
 #include "Filter.h"
+
 class PermStack{
     private:
         int NumberOfPlayers;
         std::vector<long> RoundLocationInStack;
         std::vector<std::vector<char>> RoundsCurrentlyBeingTested;
-        std::vector<std::vector<char>*> Permutations;
+        std::vector<std::vector<char>*>* Permutations;
         Filter InvalidBookFilter;
         
     public:
