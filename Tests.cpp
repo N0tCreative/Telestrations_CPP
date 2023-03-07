@@ -61,4 +61,14 @@ void StackTests(int PlayerNumber){
         PrintVec(*(Stack.Peek()));
         Stack.Pop();
     }
+
+    cout << "**************************Stack test 2: generate subsiquent permutations**************************\n";
+    PermStack Stack2 = PermStack(5);
+    Stack2.GenerateFirstPermutations();
+
+    vector<vector<char>> result =Stack2.GetValidOrder();
+    while(!Stack2.IsEmpty()){
+        PrintVec(*(Stack2.Peek()));
+        Stack2.Pop();
+    }
 }

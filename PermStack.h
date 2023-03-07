@@ -13,6 +13,7 @@ class PermStack{
         Filter InvalidBookFilter;
         bool SetRound(long Round);
         bool PushValidPermutations(long Round);
+        bool isOptimal();
         
     public:
         PermStack(int NumberOfPlayers);

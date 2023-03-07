@@ -13,7 +13,7 @@ PermStack::PermStack(int NumOfPlayers){
     InvalidBookFilter.SetNumberOfPlayers(NumberOfPlayers);
     Permutations = new std::vector<std::vector<char>*>();
     RoundLocationInStack = std::vector<long>(NumberOfPlayers-1);
-    RoundsCurrentlyBeingTested = std::vector<std::vector<char>>(NumberOfPlayers-1, std::vector<char>(NumberOfPlayers-1));
+    RoundsCurrentlyBeingTested = std::vector<std::vector<char>>(NumberOfPlayers-1, std::vector<char>(NumberOfPlayers));
 }
 
 //destructor
@@ -65,7 +65,7 @@ void PermStack::GenerateFirstPermutations(){
     std::shuffle(Permutations->begin(), Permutations->end(), rng);
 
     //set the second round pointer
-    RoundLocationInStack[0] = Permutations->size();
+    RoundLocationInStack[0] = Permutations->size() -1;
 }
 
 //pushes new permutations onto the stack if valid
@@ -106,7 +106,7 @@ void PermStack::ClearStack(){
 bool PermStack::PushValidPermutations(long Round){
     bool PushedSomething = false;
     //this logic means that permutations already excluded due to younger rounds are automatically excluded with this new branch
-    int i, Round;
+    int i;
     if(Round <1) i=0;//start at beginning
     else i =RoundLocationInStack[Round -1];//start at 2nd youngest round
 
@@ -119,7 +119,7 @@ bool PermStack::PushValidPermutations(long Round){
         }
     }
     if(PushedSomething){
-        RoundLocationInStack[Round+1] = Permutations->size();
+        RoundLocationInStack[Round+1] = Permutations->size() -1;
     }
 
     return PushedSomething;
@@ -142,6 +142,11 @@ bool PermStack::SetRound(long Round){
 
 }
 
+//checks if current round order has each person send to another only once
+bool PermStack::isOptimal(){
+    return false;
+}
+
 /* main function used to get a sending order for the books that has each person with a unique book each round
  * no person gets the same book twice, no person sends to the same person twice
  * TODO: finish this, logic is almost complete but needs a bit more thought and work
@@ -149,13 +154,36 @@ bool PermStack::SetRound(long Round){
 std::vector<std::vector<char>> PermStack::GetValidOrder(){
     bool isValid = false;
     long DeepestRound =0;
-    while(!isValid){
+    while(!isValid && !IsEmpty()){
         if(SetRound(DeepestRound)){
             DeepestRound++;
+        }else{
+            //if the deepest round has been fully exausted then set it to 0 and go up one level to the 2nd deepest
+            if(DeepestRound >0 && RoundLocationInStack[DeepestRound-1] >=RoundLocationInStack[DeepestRound]){
+                InvalidBookFilter.Unblock(RoundsCurrentlyBeingTested[DeepestRound -1]);
+                RoundLocationInStack[DeepestRound] =0;
+                DeepestRound--;
+            }
+        }
+        //temp check to see if it reaches deepest level
+        if(DeepestRound == NumberOfPlayers -2){
+            RoundsCurrentlyBeingTested[DeepestRound] = *(Permutations->back());
+            Pop();
+            RoundLocationInStack[DeepestRound] -=1;
+
+            isValid=isOptimal();
+
+            if(!isValid){
+                RoundsCurrentlyBeingTested[DeepestRound]= {0};
+                InvalidBookFilter.Unblock(RoundsCurrentlyBeingTested[DeepestRound -1]);
+                RoundLocationInStack[DeepestRound] =0;
+                DeepestRound--;
+
+            }
         }
 
     }
 
-    std::vector<std::vector<char>> empty;
-    return empty;
+    
+    return RoundsCurrentlyBeingTested;
 };
