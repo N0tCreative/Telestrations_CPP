@@ -82,7 +82,9 @@ std::vector<char>* PermStack::Peek(){
 //frees the permutation that is at the end of the stack and removes it
 void PermStack::Pop(){
     if(!IsEmpty()){
-        delete(Permutations->back());
+        //only delete if this is the last instance of the permutation so that deeper rounds can use a pointer to the same permutation
+        if(Permutations->size() == RoundLocationInStack[0])
+            delete(Permutations->back());
         Permutations->erase(Permutations->end() -1);
     }
 };
@@ -95,15 +97,65 @@ bool PermStack::IsEmpty(){
 //empties the stack and deletes everything on it
 void PermStack::ClearStack(){
     while(! IsEmpty()){
-        Pop();
+        Pop(); 
     }
     delete Permutations;
 }
 
+//pushes all valid permutations given the current deepest round
+bool PermStack::PushValidPermutations(long Round){
+    bool PushedSomething = false;
+    //this logic means that permutations already excluded due to younger rounds are automatically excluded with this new branch
+    int i, Round;
+    if(Round <1) i=0;//start at beginning
+    else i =RoundLocationInStack[Round -1];//start at 2nd youngest round
+
+    //check if every value between youngest and 2nd youngest are valid
+    for(; i<=RoundLocationInStack[Round]; i++){
+        std::vector<char> *perm = (Permutations->at(i));
+        if(InvalidBookFilter.IsValid(*perm)){
+            PushedSomething =true;
+            Permutations->push_back(perm);
+        }
+    }
+    if(PushedSomething){
+        RoundLocationInStack[Round+1] = Permutations->size();
+    }
+
+    return PushedSomething;
+}
+
+//sets the current round being tested
+bool PermStack::SetRound(long Round){
+    bool PermutationsAdded;
+    RoundsCurrentlyBeingTested[Round] = *(Permutations->back());
+    Pop();
+    RoundLocationInStack[Round] -=1;
+    InvalidBookFilter.Block(RoundsCurrentlyBeingTested[Round]);
+    PermutationsAdded =PushValidPermutations(Round);
+    //if the current selected permutation doesnt add any new permutations then it will be unblocked and removed
+    if(!PermutationsAdded){
+        InvalidBookFilter.Unblock(RoundsCurrentlyBeingTested[Round]);
+        std::fill(RoundsCurrentlyBeingTested[Round].begin(), RoundsCurrentlyBeingTested[Round].end(),0);//once the algorithm is confirmed to work this should be removed
+    }
+    return PermutationsAdded;
+
+}
+
 /* main function used to get a sending order for the books that has each person with a unique book each round
  * no person gets the same book twice, no person sends to the same person twice
+ * TODO: finish this, logic is almost complete but needs a bit more thought and work
  */
 std::vector<std::vector<char>> PermStack::GetValidOrder(){
+    bool isValid = false;
+    long DeepestRound =0;
+    while(!isValid){
+        if(SetRound(DeepestRound)){
+            DeepestRound++;
+        }
+
+    }
+
     std::vector<std::vector<char>> empty;
     return empty;
 };

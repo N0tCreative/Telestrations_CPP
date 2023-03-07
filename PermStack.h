@@ -11,6 +11,8 @@ class PermStack{
         std::vector<std::vector<char>> RoundsCurrentlyBeingTested;
         std::vector<std::vector<char>*>* Permutations;
         Filter InvalidBookFilter;
+        bool SetRound(long Round);
+        bool PushValidPermutations(long Round);
         
     public:
         PermStack(int NumberOfPlayers);
