@@ -19,4 +19,15 @@ after that the permuations will be pushed onto a stack so that recursion isnt re
 (using tree pruning algorithm). once you have a valid set of permutations then reorder them until you have covered every possible ordering or you reach one that 
 satisfies both (1) and (2). 
 
-look into using a table for who can send to who instead. this might be faster to prove that it would be impossible to never send to the same person twice.
+Optimization research:
+Condition (2) checking:
+-look into using a table for who can send to who instead. this might be faster to prove that it would be impossible to never send to the same person twice.
+-this type of issue seems similar to an euler/hamiltonian path problem (since odd numbered players never gets an optimal solution in testing thus far) but ive been unable
+to simplify to a euler/hamiltonian path problem that results in a confirmation that its impossible for odd numbers
+
+Permutation Generation:
+-did more reasearch into (1)generating the list of permutations since this seemed like a general problem that would have already been solved and it turns out i was right
+these type of permutations are called latin squares, and one can be used to create several others that are isotopic to it. unfortunately being able to swap columns and rows, 
+symbols (book numbers), and that you can flip the order completely is something i already knew about and decided against due to the large amount of repitition (repeatedly checking
+the same permutation set) that would be involved. also just creating one isotopic class would not cover all possible solutions, also as far as i can tell (2) still has to be 
+checked after the latin square generation is done regardless of method, so it seems that generating the permutations cannot be further optimized using known algorithms.
